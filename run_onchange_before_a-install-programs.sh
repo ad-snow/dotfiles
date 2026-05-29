@@ -24,9 +24,13 @@ sudo apt update
 sudo apt upgrade -y
 sudo apt install -y --no-install-recommends \
     code \
+    curl \
     fish \
     git \
     guake
+
+# Install Zed editor
+curl -f https://zed.dev/install.sh | sh
 
 # Set up favourite apps
 gsettings set org.gnome.shell favorite-apps "['firefox_firefox.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Terminal.desktop']"
