@@ -7,21 +7,67 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "helix_mode": false,
+  "format_on_save": "off",
+  "preferred_line_length": 120,
+  "remove_trailing_whitespace_on_save": false,
+  "show_whitespaces": "boundary",
+  "minimap": {
+    "thumb_border": "left_open",
+    "show": "auto",
+  },
+  "scrollbar": {
+    "show": "auto",
+  },
+  "sticky_scroll": {
+    "enabled": true,
+  },
+  "ui_font_family": "Monaspace Neon Var",
+  "agent": {
+    "default_profile": "ask",
+    "default_model": {
+      "provider": "opencode",
+      "model": "free/big-pickle",
+      "enable_thinking": false,
+    },
+    "favorite_models": [],
+    "model_parameters": [],
+  },
+  "language_models": {
+    "opencode": {
+      "show_go_models": false,
+      "show_zen_models": false,
+    },
+  },
+  "terminal": {
+    "font_family": ".ZedMono",
+  },
+  "cli_default_open_behavior": "new_window",
   "vim_mode": false,
   "telemetry": {
     "diagnostics": true,
-    "metrics": true
+    "metrics": true,
   },
   "icon_theme": {
     "mode": "system",
     "light": "Zed (Default)",
-    "dark": "Zed (Default)"
+    "dark": "Zed (Default)",
   },
   "ui_font_size": 16,
+  "buffer_font_family": "Monaspace Argon Var",
   "buffer_font_size": 15,
+  "buffer_font_features": {
+    "calt": true,
+    "ss01": true,
+    "ss02": true,
+    "sso3": true,
+    "ss06": true,
+    "ss09": true,
+    "liga": true,
+  },
   "theme": {
     "mode": "system",
     "light": "Gruvbox Light Hard",
-    "dark": "Gruvbox Dark Hard"
+    "dark": "Gruvbox Dark Hard",
   },
 }

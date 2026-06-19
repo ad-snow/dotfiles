@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+
 set -euo pipefail
 
 # Add microsoft apt key
@@ -24,6 +25,7 @@ sudo apt update
 sudo apt upgrade -y
 sudo apt install -y --no-install-recommends \
     code \
+    copyq \
     curl \
     fish \
     git \
