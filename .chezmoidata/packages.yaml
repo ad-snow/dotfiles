@@ -1,0 +1,28 @@
+packages:
+  universal:
+    package_managers:
+      # These packages are called the same for all targeted package managers
+      - copyq
+      - curl
+      - fish
+      - git
+      - guake
+
+    flatpak:
+      - flathub:
+        - net.waterfox.waterfox
+
+    wild_west:
+      # Piping downloaded scripts straight to sh/bash is not exactly safe
+      # but it's the recommended install method for some programs.
+      - name: zed
+        command: "curl -f https://zed.dev/install.sh | sh"
+
+  ubuntu:
+    apt_repositories:
+      - ppa:fish-shell/release-4
+    apt:
+      - flatpak
+
+  fedora:
+    dnf:

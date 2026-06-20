@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+
+{{ if eq .osid "linux-fedora" -}}
+
+set -euo pipefail
+
+# Update cache and already installed programs
+sudo dnf upgrade -y
+
+# Install programs with dnf
+sudo dnf install -y \
+    {{ .packages.universal.package_managers | join " " }} \
+    {{ .packages.fedora.dnf | join " " }}
+
+# Install programs with custom install scripts
+{{ range .packages.universal.wild_west -}}
+if ! command -v {{ .name }} >/dev/null 2>&1; then
+    {{ .command }}
+else
+    echo {{ .name }} already installed
+fi
+{{ end }}
+
+# Install programs with flatpak
+{{ range .packages.universal.flatpak -}}
+{{ range $repo, $packages := . -}}
+flatpak install -y {{ $repo }} {{ $packages | join " " -}}
+{{ end -}}
+{{ end }}
+
+# Set up favourite apps
+gsettings set org.gnome.shell favorite-apps "['dev.zed.Zed.desktop', 'org.gnome.Ptyxis.desktop', 'net.waterfox.waterfox.desktop', 'org.gnome.Nautilus.desktop']"
+
+{{ end }}
