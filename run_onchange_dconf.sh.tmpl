@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 
-{{ range .dconf_settings }}
-# ini file hash: {{ include .file | sha256sum }}
-dconf load {{ .path }} < {{ joinPath $.chezmoi.sourceDir .file | quote }}
+{{ range .dconf_paths }}
+{{- $setting_name := . | trimSuffix "/" | splitList "/" | last }}
+{{- $dconf_folder_path := joinPath $.chezmoi.sourceDir "dconf" }}
+{{- $file_path := printf "%s/%s.ini" $dconf_folder_path $setting_name -}}
+# ini file hash: {{ include $file_path | sha256sum }}
+dconf load {{ . }} < {{ $file_path | quote }}
 {{ end }}

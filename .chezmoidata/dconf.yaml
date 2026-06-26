@@ -1,5 +1,6 @@
-dconf_settings:
-  - path: /apps/guake/
-    file: dconf/guake.ini
-  - path: /org/gnome/shell/extensions/paperwm/
-    file: dconf/paperwm.ini
+dconf_paths:
+  # paths should end in /
+  - /apps/guake/
+  - /org/gnome/mutter/
+  - /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/
+  - /org/gnome/shell/extensions/paperwm/
