@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+{{ range .dconf_settings }}
+# ini file hash: {{ include .file | sha256sum }}
+dconf load {{ .path }} < {{ joinPath $.chezmoi.sourceDir .file | quote }}
+{{ end }}

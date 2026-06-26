@@ -28,6 +28,15 @@ flatpak install -y {{ $repo }} {{ $packages | join " " -}}
 {{ end -}}
 {{ end }}
 
+# Install programs from git
+mkdir -p ~/programs
+cd ~/programs
+{{ range .packages.universal.git -}}
+git clone {{ .url }} || git -C {{ .url | splitList "/" | last | splitList ".git" | first }} pull
+cd {{ .url | splitList "/" | last | splitList ".git" | first }}
+{{ .install_command }}
+{{ end }}
+
 # Set up favourite apps
 gsettings set org.gnome.shell favorite-apps "['dev.zed.Zed.desktop', 'org.gnome.Ptyxis.desktop', 'net.waterfox.waterfox.desktop', 'org.gnome.Nautilus.desktop']"
 

@@ -12,6 +12,10 @@ packages:
       - flathub:
         - net.waterfox.waterfox
 
+    git:
+      - url: https://github.com/paperwm/PaperWM.git
+        install_command: "make install"
+
     wild_west:
       # Piping downloaded scripts straight to sh/bash is not exactly safe
       # but it's the recommended install method for some programs.

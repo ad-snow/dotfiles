@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-
-# dconf/guake.ini hash: {{ include "dconf/guake.ini" | sha256sum }}
-dconf load /apps/guake/ < {{ joinPath .chezmoi.sourceDir "dconf/guake.ini" | quote }}

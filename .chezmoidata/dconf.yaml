@@ -1,0 +1,5 @@
+dconf_settings:
+  - path: /apps/guake/
+    file: dconf/guake.ini
+  - path: /org/gnome/shell/extensions/paperwm/
+    file: dconf/paperwm.ini
