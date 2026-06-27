@@ -1,6 +1,7 @@
 dconf_paths:
   # paths should end in /
   - /apps/guake/
+  - /desktop/ibus/panel/emoji/
   - /org/gnome/mutter/
   - /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/
   - /org/gnome/shell/extensions/paperwm/
