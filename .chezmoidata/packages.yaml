@@ -2,15 +2,26 @@ packages:
   universal:
     package_managers:
       # These packages are called the same for all targeted package managers
+      - bat
       - copyq
       - curl
+      - du-dust
+      - duf
       - fish
       - git
       - guake
+      - htop
+      - micro
+      - python3-pip
+      - thefuck
+      - tio
 
     flatpak:
       - flathub:
-        - net.waterfox.waterfox
+        - app.zen_browser.zen
+
+    pip:
+      - platformio
 
     git:
       - url: https://github.com/paperwm/PaperWM.git
