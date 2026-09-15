@@ -1,0 +1,24 @@
+".local/share/fonts/Monaspace/Monaspace_Argon_Var.ttf":
+    type: file
+    url: "https://raw.githubusercontent.com/githubnext/monaspace/main/fonts/Variable%20Fonts/Monaspace%20Argon/Monaspace%20Argon%20Var.ttf"
+    refreshPeriod: "168h"
+
+".local/share/fonts/Monaspace/Monaspace_Krypton_Var.ttf":
+    type: file
+    url: "https://raw.githubusercontent.com/githubnext/monaspace/main/fonts/Variable%20Fonts/Monaspace%20Krypton/Monaspace%20Krypton%20Var.ttf"
+    refreshPeriod: "168h"
+
+".local/share/fonts/Monaspace/Monaspace_Neon_Var.ttf":
+    type: file
+    url: "https://raw.githubusercontent.com/githubnext/monaspace/main/fonts/Variable%20Fonts/Monaspace%20Neon/Monaspace%20Neon%20Var.ttf"
+    refreshPeriod: "168h"
+
+".local/share/fonts/Monaspace/Monaspace_Radon_Var.ttf":
+    type: file
+    url: "https://raw.githubusercontent.com/githubnext/monaspace/main/fonts/Variable%20Fonts/Monaspace%20Radon/Monaspace%20Radon%20Var.ttf"
+    refreshPeriod: "168h"
+
+".local/share/fonts/Monaspace/Monaspace_Xenon_Var.ttf":
+    type: file
+    url: "https://raw.githubusercontent.com/githubnext/monaspace/main/fonts/Variable%20Fonts/Monaspace%20Xenon/Monaspace%20Xenon%20Var.ttf"
+    refreshPeriod: "168h"
