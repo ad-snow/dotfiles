@@ -7,12 +7,32 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
-  "disable_ai": true,
-  "helix_mode": false,
+  // Theme
+  "theme": {
+    "mode": "system",
+    "light": "Gruvbox Light Hard",
+    "dark": "Gruvbox Dark Hard",
+  },
+  "icon_theme": {
+    "mode": "system",
+    "light": "Zed (Default)",
+    "dark": "Zed (Default)",
+  },
+
+  // Formatting
   "format_on_save": "off",
   "preferred_line_length": 120,
-  "remove_trailing_whitespace_on_save": false,
+  "show_wrap_guides": true,
+  "wrap_guides": [80, 100, 120],
   "show_whitespaces": "boundary",
+  "remove_trailing_whitespace_on_save": true,
+  "languages": {
+    "Markdown": {
+      "remove_trailing_whitespace_on_save": false
+    }
+  },
+
+  // UI
   "minimap": {
     "thumb_border": "left_open",
     "show": "auto",
@@ -20,42 +40,24 @@
   "scrollbar": {
     "show": "auto",
   },
+
+  // UX
   "sticky_scroll": {
     "enabled": true,
   },
-  "ui_font_family": "Monaspace Neon Var",
-  "agent": {
-    "default_profile": "ask",
-    "default_model": {
-      "provider": "opencode",
-      "model": "free/big-pickle",
-      "enable_thinking": false,
-    },
-    "favorite_models": [],
-    "model_parameters": [],
-  },
-  "language_models": {
-    "opencode": {
-      "show_go_models": false,
-      "show_zen_models": false,
-    },
-  },
-  "terminal": {
-    "font_family": ".ZedMono",
-  },
-  "cli_default_open_behavior": "new_window",
+  "helix_mode": false,
   "vim_mode": false,
+
+  "cli_default_open_behavior": "new_window",
+
+  // Telemetry
   "telemetry": {
     "diagnostics": true,
     "metrics": true,
   },
-  "icon_theme": {
-    "mode": "system",
-    "light": "Zed (Default)",
-    "dark": "Zed (Default)",
-  },
-  "ui_font_size": 16,
-  "buffer_font_family": "Monaspace Argon Var",
+
+  // Fonts
+  "buffer_font_family": "Monaspace Xenon Var",
   "buffer_font_size": 15,
   "buffer_font_features": {
     "calt": true,
@@ -66,11 +68,14 @@
     "ss09": true,
     "liga": true,
   },
-  "theme": {
-    "mode": "system",
-    "light": "Gruvbox Light Hard",
-    "dark": "Gruvbox Dark Hard",
+  "ui_font_family": "Monaspace Radon Var",
+  "ui_font_size": 16,
+  "terminal": {
+    "font_family": "Monaspace Argon Var",
   },
-  "show_wrap_guides": true,
-  "wrap_guides": [80, 100, 120]
+
+  //===============================================
+  // Machine specific configuration goes below here
+  //-----------------------------------------------
+  "disable_ai": true
 }
