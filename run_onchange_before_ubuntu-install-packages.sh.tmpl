@@ -6,7 +6,7 @@ set -euo pipefail
 
 # Add apt repositories that are not included by default
 {{ range .packages.ubuntu.apt_repositories -}}
-sudo add-apt-repository -y {{ . | quote -}}
+sudo add-apt-repository -y {{ . | quote }}
 {{ end -}}
 
 # Update cache and installed programs
@@ -15,8 +15,12 @@ sudo apt upgrade -y
 
 # Install programs with apt
 sudo apt install -y --no-install-recommends \
-    {{ .packages.universal.package_managers | join " " -}} \
-    {{ .packages.ubuntu.apt | join " " -}}
+    {{ .packages.universal.package_managers | join " " }} \
+    {{ .packages.ubuntu.apt | join " " }}
+
+# Install programs with snap
+snap install \
+    {{ .packages.ubuntu.snap | join " " }}
 
 # Install programs with custom install scripts
 {{ range .packages.universal.wild_west -}}

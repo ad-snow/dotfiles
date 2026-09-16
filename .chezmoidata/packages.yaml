@@ -5,7 +5,6 @@ packages:
       - bat
       - copyq
       - curl
-      - du-dust
       - duf
       - fish
       - git
@@ -38,6 +37,9 @@ packages:
       - ppa:fish-shell/release-4
     apt:
       - flatpak
+    snap:
+      - dust
 
   fedora:
     dnf:
+      - du-dust
