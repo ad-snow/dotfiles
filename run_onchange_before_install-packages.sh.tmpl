@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 
-{{ if eq .osid "linux-ubuntu" -}}
-
 set -euo pipefail
+
+{{ if eq .osid "linux-ubuntu" -}}
 
 # Add apt repositories that are not included by default
 {{ range .packages.ubuntu.apt_repositories -}}
 sudo add-apt-repository -y {{ . | quote }}
-{{ end -}}
+{{ end }}
 
 # Update cache and installed programs
 sudo apt update
@@ -22,6 +22,23 @@ sudo apt install -y --no-install-recommends \
 snap install \
     {{ .packages.ubuntu.snap | join " " }}
 
+# Add flathub repository to flatpak. Fedora comes with that by default.
+flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+
+{{ end }}
+
+{{ if eq .osid "linux-fedora" -}}
+
+# Update cache and already installed programs
+sudo dnf upgrade -y
+
+# Install programs with dnf
+sudo dnf install -y \
+    {{ .packages.universal.package_managers | join " " }} \
+    {{ .packages.fedora.dnf | join " " }}
+
+{{ end }}
+
 # Install programs with custom install scripts
 {{ range .packages.universal.wild_west -}}
 if ! command -v {{ .name }} >/dev/null 2>&1; then
@@ -30,9 +47,6 @@ else
     echo {{ .name }} already installed
 fi
 {{ end }}
-
-# Add flathub repository to flatpak
-flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 
 # Install programs with flatpak
 {{ range .packages.universal.flatpak -}}
@@ -55,5 +69,3 @@ cd {{ .url | splitList "/" | last | splitList ".git" | first }}
 
 # Set up favourite apps
 gsettings set org.gnome.shell favorite-apps "['app.zen_browser.zen.desktop', 'dev.zed.Zed.desktop', 'org.gnome.Nautilus.desktop']"
-
-{{ end -}}
