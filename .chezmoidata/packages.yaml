@@ -28,7 +28,15 @@ packages:
   - paperwm:
       git:
         repo: https://github.com/paperwm/PaperWM.git
-        command: make install
+        command: |
+          GNOME_SHELL_VERSION=$(gnome-shell --version | cut -d' ' -f3 | cut -d'.' -f1)
+          if [ "$GNOME_SHELL_VERSION" -lt 45 ]; then
+            git checkout gnome-44
+            git pull
+            ./install.sh
+          else
+             make install
+          fi
 
   - platformio:
       pip:

@@ -117,8 +117,9 @@ python3 -m pip install -U {{ $pip_packages | join " " }}
 mkdir -p ~/programs
 cd ~/programs
 {{ range $git_packages -}}
-git clone {{ .repo }} || git -C {{ .repo | splitList "/" | last | splitList ".git" | first }} pull
-cd {{ .repo | splitList "/" | last | splitList ".git" | first }}
+{{- $repo_name := .repo | splitList "/" | last | splitList ".git" | first -}}
+git clone {{ .repo }} || git -C {{ $repo_name | quote }} pull
+cd {{ $repo_name | quote }}
 {{ .command }}
 {{ end }}
 
