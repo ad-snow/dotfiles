@@ -5,7 +5,7 @@ set -euo pipefail
 {{ if eq .osid "linux-ubuntu" -}}
 
 # Add apt repositories that are not included by default
-{{ range .packages.ubuntu.apt_repositories -}}
+{{ range .repositories.apt -}}
 sudo add-apt-repository -y {{ . | quote }}
 {{ end }}
 
@@ -14,18 +14,35 @@ sudo apt update
 sudo apt upgrade -y
 
 # Install programs with apt
-sudo apt install -y --no-install-recommends \
-    {{ .packages.universal.package_managers | join " " }} \
-    {{ .packages.ubuntu.apt | join " " }}
+{{- $apt_packages := list }}
+{{- range $package := .packages }}
+  {{- if kindIs "string" $package }}
+    {{/* Pure string packages mean we can use them directly with the default package manager */}}
+    {{- $apt_packages = append $apt_packages $package }}
+  {{- else }}
+    {{- range $name, $methods := $package }}
+      {{- if hasKey $methods "apt" }}
+        {{- $apt_packages = append $apt_packages ($methods.apt | default $name) }}
+      {{- end }}
+    {{- end }}
+  {{- end }}
+{{- end }}
+sudo apt install -y --no-install-recommends {{ $apt_packages | join " " }}
 
 # Install programs with snap
-snap install \
-    {{ .packages.ubuntu.snap | join " " }}
+{{- $snap_packages := list }}
+{{- range $package := .packages }}
+  {{- if kindIs "map" $package }}
+    {{- range $name, $methods := $package }}
+      {{- if hasKey $methods "snap" }}
+        {{- $snap_packages = append $snap_packages ($methods.snap | default $name) }}
+      {{- end }}
+    {{- end }}
+  {{- end }}
+{{- end }}
+snap install {{ $snap_packages | join " " }}
 
-# Add flathub repository to flatpak. Fedora comes with that by default.
-flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
-
-{{ end }}
+{{ end }} # if eq .osid "linux-ubuntu"
 
 {{ if eq .osid "linux-fedora" -}}
 
@@ -33,39 +50,93 @@ flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.f
 sudo dnf upgrade -y
 
 # Install programs with dnf
-sudo dnf install -y \
-    {{ .packages.universal.package_managers | join " " }} \
-    {{ .packages.fedora.dnf | join " " }}
+{{- $dnf_packages := list }}
+{{- range $package := .packages }}
+  {{- if kindIs "string" $package }}
+    {{/* Pure string packages mean we can use them directly with the default package manager */}}
+    {{- $dnf_packages = append $dnf_packages $package }}
+  {{- else }}
+    {{- range $name, $methods := $package }}
+      {{- if hasKey $methods "dnf" }}
+        {{- $dnf_packages = append $dnf_packages ($methods.dnf | default $name) }}
+      {{- end }}
+    {{- end }}
+  {{- end }}
+{{- end }}
+sudo dnf install -y {{ $dnf_packages | join " " }}
 
-{{ end }}
+{{ end }} # if eq .osid "linux-fedora"
 
-# Install programs with custom install scripts
-{{ range .packages.universal.wild_west -}}
-if ! command -v {{ .name }} >/dev/null 2>&1; then
-    {{ .command }}
-else
-    echo {{ .name }} already installed
-fi
+# Add repositories to flatpak
+{{ range .repositories.flatpak -}}
+flatpak remote-add --if-not-exists {{ .location | quote }} {{ .url | quote }}
 {{ end }}
 
 # Install programs with flatpak
-{{ range .packages.universal.flatpak -}}
-{{ range $repo, $packages := . -}}
-flatpak install -y {{ $repo }} {{ $packages | join " " -}}
-{{ end -}}
+{{- $flatpak_packages := list }}
+{{- range $package := .packages }}
+  {{- if kindIs "map" $package }}
+    {{- range $name, $methods := $package }}
+      {{- if hasKey $methods "flatpak" }}
+        {{- $flatpak_packages = append $flatpak_packages $methods.flatpak }}
+      {{- end }}
+    {{- end }}
+  {{- end }}
+{{- end }}
+{{ range $flatpak_packages -}}
+{{- if not (hasKey . "repo") }}
+  {{- $_ := set . "repo" "flathub" }}
+{{- end }}
+flatpak install -y {{ .repo }} {{ .name -}}
 {{ end }}
 
 # Install programs with pip
-python3 -m pip install -U {{ .packages.universal.pip | join " " }}
+{{- $pip_packages := list }}
+{{- range $package := .packages }}
+  {{- if kindIs "map" $package }}
+    {{- range $name, $methods := $package }}
+      {{- if hasKey $methods "pip" }}
+        {{- $pip_packages = append $pip_packages ($methods.pip | default $name) }}
+      {{- end }}
+    {{- end }}
+  {{- end }}
+{{- end }}
+python3 -m pip install -U {{ $pip_packages | join " " }}
 
 # Install programs from git
+{{- $git_packages := list }}
+{{- range $package := .packages }}
+  {{- if kindIs "map" $package }}
+    {{- range $name, $methods := $package }}
+      {{- if hasKey $methods "git" }}
+        {{- $git_packages = append $git_packages $methods.git }}
+      {{- end }}
+    {{- end }}
+  {{- end }}
+{{- end }}
 mkdir -p ~/programs
 cd ~/programs
-{{ range .packages.universal.git -}}
-git clone {{ .url }} || git -C {{ .url | splitList "/" | last | splitList ".git" | first }} pull
-cd {{ .url | splitList "/" | last | splitList ".git" | first }}
-{{ .install_command }}
+{{ range $git_packages -}}
+git clone {{ .repo }} || git -C {{ .repo | splitList "/" | last | splitList ".git" | first }} pull
+cd {{ .repo | splitList "/" | last | splitList ".git" | first }}
+{{ .command }}
 {{ end }}
+
+# Install programs with custom install scripts
+{{- $wild_west_install_commands := list }}
+{{- range $package := .packages }}
+  {{- if kindIs "map" $package }}
+    {{- range $name, $methods := $package }}
+      {{- if hasKey $methods "command" }}
+        {{- $wild_west_install_commands = append $wild_west_install_commands $methods.command }}
+      {{- end }}
+    {{- end }}
+  {{- end }}
+{{- end }}
+{{ range $wild_west_install_commands -}}
+{{ . }}
+{{ end }}
+
 
 # Set up favourite apps
 gsettings set org.gnome.shell favorite-apps "['app.zen_browser.zen.desktop', 'dev.zed.Zed.desktop', 'org.gnome.Nautilus.desktop']"
